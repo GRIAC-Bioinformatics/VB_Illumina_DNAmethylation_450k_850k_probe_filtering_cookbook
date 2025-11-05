@@ -112,3 +112,32 @@ beta_norm <- beta_norm[!(rownames(beta_norm) %in% failed.probes),]
 # additional epic probes
 beta_norm <- beta_norm[!(rownames(beta_norm) %in% epic.add.probes),]
 ```
+
+# EPICv2/950K array
+
+### *Update (250511)* Potential cross-hybridization probes for Illumina EPICv2/950K array
+This file `EPICV2_probes_950K_CrossHybridization.csv` contains the list of probes identified as potential cross-hybridization probes for the Illumina HumanMethylationEPIC v2.0 (950K) array (Peters *et al.,*). It provides an important resource for filtering or quality control in analyses involving the EPICv2/950K platform.
+
+>Peters, T.J., Meyer, B., Ryan, L. et al. *Characterisation and reproducibility of the HumanMethylationEPIC v2.0 BeadChip for DNA methylation profiling.* **BMC Genomics** 25, 251 (2024).
+
+  - the list contains a total of 30,627 probes
+  - these are available in `EPICV2_probes_950K_CrossHybridization.csv`
+
+***Note:*** there is overlap between this probe set and flagged probes in the QC pipeline (see `TK_dna-methylation_cookbook`).
+
+### Usage
+```Python
+# Import the Pandas library
+import pandas as pd
+# Read the list of flagged probes from the QC pipeline
+flagged = pd.read_csv('all_flagged_probes.csv')
+# Read the list of known cross-hybridization probes for the EPICv2/950K array
+cross_hybridization = pd.read_csv('EPICV2_probes_950K_CrossHybridization.csv')
+# Combine the two probe lists into one unified list
+# Ensure each probe ID appears only once *adjust this column name if different in your file
+excluded_probes = pd.concat([flagged["Probes"], cross_hybridization["EPICV2_950K"]]).drop_duplicates().reset_index(drop=True)
+# Save to a single CSV
+excluded_probes.to_csv('excluded_probes.csv', index=False, header=['Probe'])
+# (Optional) Print summary
+print(f"Saved {len(excluded_probes)} probe names to excluded_probes.csv")
+```
