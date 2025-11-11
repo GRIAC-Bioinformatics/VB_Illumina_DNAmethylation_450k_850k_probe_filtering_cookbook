@@ -121,15 +121,16 @@ This file `EPICV2_probes_950K_CrossHybridization.csv` contains the list of probe
 >Peters, T.J., Meyer, B., Ryan, L. et al. *Characterisation and reproducibility of the HumanMethylationEPIC v2.0 BeadChip for DNA methylation profiling.* **BMC Genomics** 25, 251 (2024).
 
   - the list contains a total of 30,627 probes
+  - the list is generated from additional file 8 from the publication, removing duplicates and non-canonical illumina probe ID
   - these are available in `EPICV2_probes_950K_CrossHybridization.csv`
 
-***Note:*** there is overlap between this probe set and flagged probes in the QC pipeline (see `TK_dna-methylation_cookbook`).
+***Note:*** There might be overlap between this probe set and flagged probes in the QC pipeline (see [TK_dna-methylation_cookbook](https://github.com/GRIAC-Bioinformatics/TK_dna-methylation_cookbook)).
 
 ### Usage
 ```Python
 # Import the Pandas library
 import pandas as pd
-# Read the list of flagged probes from the QC pipeline
+# Read the list of flagged probes from the QC pipeline (see TK_dna-methylation_cookbook)
 flagged = pd.read_csv('all_flagged_probes.csv')
 # Read the list of known cross-hybridization probes for the EPICv2/950K array
 cross_hybridization = pd.read_csv('EPICV2_probes_950K_CrossHybridization.csv')
@@ -141,3 +142,4 @@ excluded_probes.to_csv('excluded_probes.csv', index=False, header=['Probe'])
 # (Optional) Print summary
 print(f"Saved {len(excluded_probes)} probe names to excluded_probes.csv")
 ```
+The generated `excluded_probes.csv` should be used in the probe exclusion step in [TK_dna-methylation_cookbook](https://github.com/GRIAC-Bioinformatics/TK_dna-methylation_cookbook) QC pipeline.
